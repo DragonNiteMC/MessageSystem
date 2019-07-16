@@ -1,0 +1,32 @@
+prefix: "&b私訊系統// &7"
+msg-format: "&e<sender> &7-> &a<receiver>&f: <messages>"
+player-info:
+  - "&d所在伺服器:&e <server>"
+  - "&a所在權限群組:&e <group>"
+  - "&f----------------------"
+  - "&a點擊以私訊 <sender>"
+server-alias:
+  lobby: "&a伺服器大堂"
+  gsglobby: "&6槍戰飢餓遊戲-大堂"
+  inflobby: "&c槍戰生化模式-大堂"
+  bflobby: "&5戰地風雲-大堂"
+
+msg:
+  no-replier: "&c你沒有可回覆的對象!"
+  send-self: "&c你無法發送訊息給自己!"
+  reloaded: "重載完成。"
+  toggle:
+    enable: "&7你 &a啟用 &7私訊系統!"
+    disable: "&7你 &c關閉 &7私訊系統!"
+    disabled: "&7你 &c關閉&7 了私人私訊系統! 任何人將無法與你進行私訊交流。"
+    disabled-other: "&6<receiver> &c關閉&7 了他的私訊系統!"
+    enable-other: "&a啟用了 &6<toggled> 的 &7私訊系統!"
+    disable-other: "&c關閉了 &6<toggled> 的 &7私訊系統!"
+    be-enable: "&6<mod> &a啟用 &7了你的私訊系統!"
+    be-disable: "&6<mod> &c關閉 &7了你的私訊系統!"
+  ignore:
+    ignoring: "&7你正在忽略 &6<target>&7!"
+    ignored: "&7你忽略了 &6<ignored>&7!"
+    list: "&e<player> &7的忽略列表: &a<list>"
+    none: "&7<player> 尚未忽略任何人。"
+    no-ignored: "&7你不再忽略 &6<ignored>&7。"

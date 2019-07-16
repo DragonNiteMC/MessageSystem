@@ -1,0 +1,3 @@
+name: MessageSystem
+main: com.ericlam.mc.msgsystem.main.MSGSystem
+version: 0.0.1-SNAPSHOT

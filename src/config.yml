@@ -1,0 +1,59 @@
+prefix: "&b訊息系統// &7"
+msg-format: "&e<sender> &7-> &a<receiver>&f: <messages>"
+command-cooldown: 3000
+player-info:
+  - "&d所在伺服器:&e <server>"
+  - "&a所在權限群組:&e <group>"
+  - "&f----------------------"
+  - "&a點擊以私訊 <sender>"
+# broadcast placeholders: <msg> <sender>
+broadcast:
+  - '&c&l&m+----------------------------------+'
+  - ' &6公告: '
+  - '     &f<msg>'
+  - '&c&l&m+----------------------------------+'
+server-alias:
+  lobby: "&a伺服器大堂"
+  gsglobby: "&6槍戰飢餓遊戲-大堂"
+  inflobby: "&c槍戰生化模式-大堂"
+  bflobby: "&5戰地風雲-大堂"
+
+suggest-send: "&7點我傳送到&d <server>"
+
+msg:
+  chat:
+    too-fast: "&c你發送訊息的速度太快了! 請稍等 <sec> 秒後再嘗試。"
+    advertise: "&c請不要在公頻發送未經許可的網站或IP。"
+    no-spam: "&c洗屏&7在本伺服器是不被允許的。"
+  too-fast: "你發送指令的速度太快了，請稍等 <sec> 秒後再嘗試。"
+  no-replier: "&c你沒有可回覆的對象!"
+  send-self: "&c指令發送對象無法為自己!"
+  reloaded: "重載完成。"
+  toggle:
+    enable: "&7你 &a啟用了 &7私訊系統!"
+    disable: "&7你 &c關閉了 &7私訊系統!"
+    disabled: "&7你 &c關閉&7 了私人私訊系統! 任何人將無法與你進行私訊交流。"
+    disabled-other: "&6<receiver> &c關閉&7 了他的私訊系統!"
+    enable-other: "&a啟用了 &6<toggled> 的 &7私訊系統!"
+    disable-other: "&c關閉了 &6<toggled> 的 &7私訊系統!"
+    be-enable: "&6<mod> &a啟用 &7了你的私訊系統!"
+    be-disable: "&6<mod> &c關閉 &7了你的私訊系統!"
+  ignore:
+    ignoring: "&7你正在忽略 &6<target>&7!"
+    ignored: "&7你忽略了 &6<ignored>&7!"
+    list: "&e<player> &7的忽略列表: &f<list>"
+    none: "&7<player> 尚未忽略任何人。"
+    no-ignored: "&7你不再忽略 &6<ignored>&7。"
+  spy:
+    enable: "&a啟用 &e監察模式&7! &c(小心被洗屏)"
+    disable: "&c關閉 &e監察模式&7!"
+    prefix: "&4監察// &7"
+  announce:
+    list: "&e<key> &7-> &a<sectionKey> &7的公告訊息: "
+    keys: "&7公告列表: &f<list>"
+    section-keys:
+      - "&e<key> 的資訊: "
+      - "&a 發送間隔(秒): &f<sec>"
+      - "&a 公告訊息列表: &f<list>"
+    sent: "&e公告訊息已成功發出。"
+    none: "&c找不到此公告!"

@@ -10,4 +10,6 @@ public interface IllegalChatManager {
     boolean antiAdvertise(ProxiedPlayer player, final ChatEvent e);
 
     boolean antiDuplicate(ProxiedPlayer player, final ChatEvent e);
+
+    boolean antiCharDuplicate(ProxiedPlayer player, final ChatEvent e);
 }

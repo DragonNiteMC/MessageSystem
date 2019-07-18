@@ -37,8 +37,9 @@ public class MSGChatListener implements Listener, IllegalChatManager {
         if (e.isCommand()) return;
         if (!(e.getSender() instanceof ProxiedPlayer)) return;
         ProxiedPlayer player = (ProxiedPlayer) e.getSender();
-        if (this.antiDuplicate(player, e)) return;
         if (this.antiSpam(player, e)) return;
+        if (this.antiAdvertise(player, e)) return;
+        if (this.antiDuplicate(player, e)) return;
         this.antiAdvertise(player, e);
     }
 
@@ -75,6 +76,40 @@ public class MSGChatListener implements Listener, IllegalChatManager {
             MessageBuilder.sendMessage(player, configManager.getMessage("msg.chat.advertise"));
         }
         return cancel;
+    }
+
+    @Override
+    public boolean antiCharDuplicate(ProxiedPlayer player, final ChatEvent e) {
+        int spamChatMax = configManager.getData("spam-char-max", int.class).orElse(30);
+        final String message = e.getMessage();
+        int i = 0;
+        char previousChar = '\u0000';
+        boolean cancel = false;
+        for (char ch : message.toCharArray()) {
+
+            if (previousChar == '\u0000') {
+                previousChar = ch;
+                continue;
+            }
+
+            if (previousChar == ch) {
+                i++;
+            } else {
+                previousChar = ch;
+                i = 0;
+            }
+
+            if (i >= spamChatMax) {
+                cancel = true;
+                break;
+            }
+        }
+        if (cancel) {
+            e.setCancelled(true);
+            MessageBuilder.sendMessage(player, configManager.getMessage("msg.chat.no-spam"));
+            return true;
+        }
+        return false;
     }
 
     @Override

@@ -1,5 +1,5 @@
 name: MessageSystem
 main: com.ericlam.mc.msgsystem.main.MSGSystem
-version: 0.3.2
+version: 0.3.3
 author: Hydranapse_
 depends: [HyperNiteMC-Bungee, LuckPerms]

@@ -30,6 +30,10 @@ public class MSGConfig extends ConfigSetter {
     @Extract(name = "whitelist-domain")
     private List<String> whitelistDomains;
 
+
+    @Extract(name = "spam-char-max")
+    private int spamCharMax;
+
     public MSGConfig(Plugin plugin) {
         super(plugin,
                 "config.yml", "announce.yml", "chat.yml");
@@ -70,5 +74,6 @@ public class MSGConfig extends ConfigSetter {
         this.cooldownChat = chat.getLong("cooldown-chat");
         this.whitelistIP = chat.getStringList("whitelist.ips");
         this.whitelistDomains = chat.getStringList("whitelist.domains");
+        this.spamCharMax = chat.getInt("spam-char-max");
     }
 }

@@ -38,8 +38,8 @@ public class MSGChatListener implements Listener, IllegalChatManager {
         if (!(e.getSender() instanceof ProxiedPlayer)) return;
         ProxiedPlayer player = (ProxiedPlayer) e.getSender();
         if (this.antiSpam(player, e)) return;
-        if (this.antiAdvertise(player, e)) return;
         if (this.antiDuplicate(player, e)) return;
+        if (this.antiCharDuplicate(player, e)) return;
         this.antiAdvertise(player, e);
     }
 

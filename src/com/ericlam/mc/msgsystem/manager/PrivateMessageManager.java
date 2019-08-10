@@ -93,7 +93,10 @@ public class PrivateMessageManager implements PMManager {
         this.changeLastMessager(player, target);
         final TextComponent finalMsg = new AdvMessageBuilder(configManager.getPureMessage("prefix")).add(format).build();
         player.sendMessage(finalMsg);
-        if (!targetIsIgnoringPlayer) target.sendMessage(finalMsg);
+        if (!targetIsIgnoringPlayer) {
+            this.changeLastMessager(target, player);
+            target.sendMessage(finalMsg);
+        }
     }
 
     @Override

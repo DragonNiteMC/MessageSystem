@@ -15,6 +15,9 @@ public class MSGConfig extends ConfigSetter {
     @Extract(name = "sa")
     private Map<String, String> serverAlias = new HashMap<>();
 
+    @Extract(name = "ga")
+    private Map<String, String> groupAlias = new HashMap<>();
+
 
     @Extract(name = "am")
     private Map<String, Announcer> announcerMap = new HashMap<>();
@@ -48,6 +51,12 @@ public class MSGConfig extends ConfigSetter {
         for (String key : aliasSection.getKeys()) {
             String display = ChatColor.translateAlternateColorCodes('&', aliasSection.getString(key));
             this.serverAlias.put(key, display);
+        }
+        this.groupAlias.clear();
+        aliasSection = format.getSection("group-alias");
+        for (String key : aliasSection.getKeys()) {
+            String display = ChatColor.translateAlternateColorCodes('&', aliasSection.getString(key));
+            this.groupAlias.put(key, display);
         }
         this.announcerMap.clear();
         Configuration announce = hashMap.get("announce.yml");

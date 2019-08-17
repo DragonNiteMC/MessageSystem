@@ -25,4 +25,6 @@ public interface PMManager extends UserLoadable {
 
     Map<String, String> getDisplayAlias();
 
+    Map<String, String> getGroupAlias();
+
 }

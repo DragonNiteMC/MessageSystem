@@ -114,7 +114,7 @@ public class PrivateMessageManager implements PMManager {
     @Override
     public String[] getInfo(ProxiedPlayer player) {
         User user = LuckPerms.getApi().getUser(player.getUniqueId());
-        String group = user == null ? "§c[! 加載失敗]" : user.getPrimaryGroup();
+        String group = user == null ? "§c[! 加載失敗]" : this.getGroupAlias().containsKey(user.getPrimaryGroup()) ? this.getGroupAlias().get(user.getPrimaryGroup()) : user.getPrimaryGroup();
         String server = Optional.ofNullable(this.getDisplayAlias().get(player.getServer().getInfo().getName())).orElse(player.getServer().getInfo().getName());
         return Arrays.stream(configManager.getMessageList("player-info", false))
                 .map(line -> line
@@ -138,6 +138,11 @@ public class PrivateMessageManager implements PMManager {
     @Override
     public Map<String, String> getDisplayAlias() {
         return configManager.getDataMap("sa", String.class, String.class);
+    }
+
+    @Override
+    public Map<String, String> getGroupAlias() {
+        return configManager.getDataMap("ga", String.class, String.class);
     }
 
     @Override

@@ -17,6 +17,19 @@ server-alias:
   gsglobby: "&6槍戰飢餓遊戲-大堂"
   inflobby: "&c槍戰生化模式-大堂"
   bflobby: "&5戰地風雲-大堂"
+group-alias:
+  default: "&e玩家"
+  fairy: "&bVIP"
+  dragon: "&bVIP"
+  phoenix: "&bVIP"
+  youtuber: "&c實況主"
+  helper: "&a玩家管理層"
+  mod: "&a玩家管理層"
+  owner: "&c伺服高層"
+  admin: "&c伺服管理層"
+  developer: "&c伺服管理層"
+  staff: "&c伺服管理層"
+
 
 suggest-send: "&7點我傳送到&d <server>"
 

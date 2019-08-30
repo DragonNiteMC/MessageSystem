@@ -26,6 +26,7 @@ public class MSGChatListener implements Listener, IllegalChatManager {
     private final Pattern DOMAIN_PATTERN = Pattern.compile("(http(s)?:\\/\\/.)?(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}( ?\\. ?| ?\\(?dot\\)? ?)[a-z]{2,6}\\b([-a-zA-Z0-9@:%_+.~#?&/=]*)");
     private ConfigManager configManager;
     private Map<UUID, LocalDateTime> antiSpam = new HashMap<>();
+    private Map<UUID, Integer> spamDuplicateMap = new HashMap<>();
     private Map<UUID, Duplication> duplicationMap = new HashMap<>();
 
     public MSGChatListener() {
@@ -52,13 +53,21 @@ public class MSGChatListener implements Listener, IllegalChatManager {
         }
         LocalDateTime previousTalkTime = antiSpam.get(player.getUniqueId());
         Duration duration = Duration.between(previousTalkTime, LocalDateTime.now());
+        final long dupMax = configManager.getData("anti-spam-duplicate", Long.class).orElse(5L);
         if (duration.toMillis() >= chatCooldown) {
             antiSpam.put(player.getUniqueId(), LocalDateTime.now());
+            if (spamDuplicateMap.getOrDefault(player.getUniqueId(), 0) > dupMax)
+                spamDuplicateMap.remove(player.getUniqueId());
             return false;
         }
         e.setCancelled(true);
         double sec = new BigDecimal((double) (chatCooldown - duration.toMillis()) / 1000).setScale(1, RoundingMode.HALF_EVEN).doubleValue();
         MessageBuilder.sendMessage(player, configManager.getMessage("msg.chat.too-fast").replace("<sec>", sec + ""));
+        this.spamDuplicateMap.putIfAbsent(player.getUniqueId(), 0);
+        this.spamDuplicateMap.computeIfPresent(player.getUniqueId(), (d, i) -> ++i);
+        if (this.spamDuplicateMap.get(player.getUniqueId()) >= configManager.getData("anti-spam-duplicate", Long.class).orElse(5L)) {
+            antiSpam.put(player.getUniqueId(), LocalDateTime.now());
+        }
         return true;
     }
 

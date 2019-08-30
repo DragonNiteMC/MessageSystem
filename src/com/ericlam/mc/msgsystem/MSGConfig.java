@@ -28,6 +28,8 @@ public class MSGConfig extends ConfigSetter {
     private int duplicateMax;
     @Extract(name = "cooldown-chat")
     private long cooldownChat;
+    @Extract(name = "anti-spam-duplicate")
+    private long antiSpamDup;
     @Extract(name = "whitelist-ip")
     private List<String> whitelistIP;
     @Extract(name = "whitelist-domain")
@@ -84,5 +86,6 @@ public class MSGConfig extends ConfigSetter {
         this.whitelistIP = chat.getStringList("whitelist.ips");
         this.whitelistDomains = chat.getStringList("whitelist.domains");
         this.spamCharMax = chat.getInt("spam-char-max");
+        this.antiSpamDup = chat.getLong("anti-spam-duplicate");
     }
 }

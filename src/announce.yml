@@ -1,5 +1,5 @@
 normal-announce:
-  servers: [ALL]
+  servers: '[ALL]'
   delay: 1000
   messages:
     restart:

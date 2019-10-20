@@ -1,6 +1,5 @@
 prefix: "&b訊息系統// &7"
 msg-format: "&e<sender> &7-> &a<receiver>&f: <messages>"
-command-cooldown: 3000
 player-info:
   - "&d所在伺服器:&e <server>"
   - "&a所在權限群組:&e <group>"
@@ -31,6 +30,11 @@ group-alias:
   staff: "&c伺服管理層"
 
 
+channels:
+  staff: "&c伺服管理層&7//&e%player%&7//&r "
+  admin: "&e玩家管理層&7//&e%player%&7//&r "
+
+
 suggest-send: "&7點我傳送到&d <server>"
 
 msg:
@@ -41,6 +45,7 @@ msg:
   too-fast: "你發送指令的速度太快了，請稍等 <sec> 秒後再嘗試。"
   no-replier: "&c你沒有可回覆的對象!"
   send-self: "&c指令發送對象無法為自己!"
+  unknown-channel: "找不到/無法存取頻道 <channel>。"
   reloaded: "重載完成。"
   toggle:
     enable: "&7你 &a啟用了 &7私訊系統!"

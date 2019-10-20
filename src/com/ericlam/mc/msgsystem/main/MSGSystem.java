@@ -1,12 +1,14 @@
 package com.ericlam.mc.msgsystem.main;
 
 import com.ericlam.mc.bungee.hnmc.commands.caxerx.CommandRegister;
-import com.ericlam.mc.bungee.hnmc.config.ConfigManager;
+import com.ericlam.mc.bungee.hnmc.config.YamlManager;
 import com.ericlam.mc.bungee.hnmc.main.HyperNiteMC;
-import com.ericlam.mc.msgsystem.MSGConfig;
 import com.ericlam.mc.msgsystem.ModuleImplement;
 import com.ericlam.mc.msgsystem.api.*;
 import com.ericlam.mc.msgsystem.commands.*;
+import com.ericlam.mc.msgsystem.config.AnnounceConfig;
+import com.ericlam.mc.msgsystem.config.ChatConfig;
+import com.ericlam.mc.msgsystem.config.MSGConfig;
 import com.ericlam.mc.msgsystem.listener.MSGChatListener;
 import com.ericlam.mc.msgsystem.listener.MSGListener;
 import com.ericlam.mc.msgsystem.manager.AnnouncementManager;
@@ -16,7 +18,6 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import net.md_5.bungee.api.plugin.Plugin;
 
-import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -24,7 +25,7 @@ public class MSGSystem extends Plugin implements MessageSystemAPI {
 
     private static MessageSystemAPI api;
     private ModuleImplement moduleImplement = new ModuleImplement();
-    private ConfigManager configManager;
+    private YamlManager configManager;
     private PlayerIgnoreManager playerIgnoreManager;
     private ListSerializer listSerializer;
     private PMManager pmManager;
@@ -32,6 +33,7 @@ public class MSGSystem extends Plugin implements MessageSystemAPI {
     private ChatSpyManager chatSpyManager;
     private AutoAnnounceRunnable autoAnnounceRunnable;
     private IllegalChatManager illegalChatManager;
+    private ChannelManager channelManager;
 
     public static MessageSystemAPI getApi() {
         return api;
@@ -43,13 +45,10 @@ public class MSGSystem extends Plugin implements MessageSystemAPI {
 
     @Override
     public void onLoad() {
-        try {
-            configManager = HyperNiteMC.getAPI().registerConfig(new MSGConfig(this));
-            configManager.setMsgConfig("config.yml");
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
+        configManager = HyperNiteMC.getAPI().getConfigFactory(this)
+                .register("config.yml", MSGConfig.class)
+                .register("chat.yml", ChatConfig.class)
+                .register("announce.yml", AnnounceConfig.class).dump();
         api = this;
         Injector injector = Guice.createInjector(moduleImplement);
         listSerializer = injector.getInstance(ListSerializer.class);
@@ -58,11 +57,12 @@ public class MSGSystem extends Plugin implements MessageSystemAPI {
         announceManager = injector.getInstance(AnnounceManager.class);
         chatSpyManager = injector.getInstance(ChatSpyManager.class);
         illegalChatManager = injector.getInstance(IllegalChatManager.class);
+        channelManager = injector.getInstance(ChannelManager.class);
     }
 
     @Override
     public void onEnable() {
-        this.getProxy().getPluginManager().registerListener(this, new MSGListener(this));
+        this.getProxy().getPluginManager().registerListener(this, (MSGListener) channelManager);
         this.getProxy().getPluginManager().registerListener(this, (MSGChatListener) illegalChatManager);
         CommandRegister register = HyperNiteMC.getAPI().getCommandRegister();
         register.registerCommand(this, new IgnorePMCommand());
@@ -73,6 +73,9 @@ public class MSGSystem extends Plugin implements MessageSystemAPI {
         register.registerCommand(this, new StaffCommand());
         autoAnnounceRunnable = new AutoAnnounceRunnable(announceManager);
         this.getProxy().getScheduler().schedule(this, autoAnnounceRunnable, 0L, 1L, TimeUnit.SECONDS);
+        configManager.getConfigAs(MSGConfig.class).channelMap.forEach((channel, format) -> {
+            channelManager.registerChannel(channel, format, player -> player.hasPermission("hypernite.channel.".concat(channel)));
+        });
     }
 
     @Override
@@ -86,13 +89,18 @@ public class MSGSystem extends Plugin implements MessageSystemAPI {
     }
 
     @Override
-    public ConfigManager getConfigManager() {
+    public YamlManager getConfigManager() {
         return configManager;
     }
 
     @Override
     public ListSerializer getListSerializer() {
         return listSerializer;
+    }
+
+    @Override
+    public ChannelManager getChannelManager() {
+        return channelManager;
     }
 
     @Override
@@ -117,8 +125,7 @@ public class MSGSystem extends Plugin implements MessageSystemAPI {
 
     @Override
     public void pluginReload() {
-        configManager.reloadAllConfigs();
-        configManager.setMsgConfig("config.yml");
+        configManager.reloadConfigs();
         ((AnnouncementManager) announceManager).reloadAnnouncer();
         autoAnnounceRunnable.reloadAnnouncer();
     }

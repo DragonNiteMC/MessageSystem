@@ -2,12 +2,13 @@ package com.ericlam.mc.msgsystem.commands;
 
 import com.ericlam.mc.bungee.hnmc.builders.MessageBuilder;
 import com.ericlam.mc.bungee.hnmc.commands.caxerx.CommandNode;
-import com.ericlam.mc.bungee.hnmc.config.ConfigManager;
+import com.ericlam.mc.bungee.hnmc.config.YamlManager;
 import com.ericlam.mc.bungee.hnmc.main.HyperNiteMC;
 import com.ericlam.mc.msgsystem.api.AnnounceManager;
 import com.ericlam.mc.msgsystem.api.ChatSpyManager;
 import com.ericlam.mc.msgsystem.api.PMManager;
 import com.ericlam.mc.msgsystem.api.PlayerIgnoreManager;
+import com.ericlam.mc.msgsystem.config.ChatConfig;
 import com.ericlam.mc.msgsystem.main.MSGSystem;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -28,7 +29,7 @@ public abstract class MSGSystemCommandNode extends CommandNode {
 
     private static Map<UUID, LocalDateTime> lastCommandExecute = new ConcurrentHashMap<>();
 
-    protected ConfigManager configManager;
+    protected YamlManager configManager;
 
     protected PlayerIgnoreManager playerIgnoreManager;
 
@@ -55,7 +56,7 @@ public abstract class MSGSystemCommandNode extends CommandNode {
         }
         ProxiedPlayer player = (ProxiedPlayer) commandSender;
         if (lastCommandExecute.containsKey(player.getUniqueId())) {
-            long cooldown = configManager.getData("cmd-cooldown", Long.class).orElse(3000L);
+            long cooldown = configManager.getConfigAs(ChatConfig.class).commandCooldown;
             Duration duration = Duration.between(lastCommandExecute.get(player.getUniqueId()), LocalDateTime.now());
             if (duration.toMillis() < cooldown) {
                 double sec = new BigDecimal((double) (cooldown - duration.toMillis()) / 1000).setScale(1, RoundingMode.HALF_EVEN).doubleValue();

@@ -1,8 +1,8 @@
 package com.ericlam.mc.msgsystem.manager;
 
 import com.ericlam.mc.bungee.hnmc.builders.MessageBuilder;
-import com.ericlam.mc.bungee.hnmc.config.ConfigManager;
 import com.ericlam.mc.msgsystem.api.AnnounceManager;
+import com.ericlam.mc.msgsystem.config.AnnounceConfig;
 import com.ericlam.mc.msgsystem.container.Announcer;
 import com.ericlam.mc.msgsystem.main.MSGSystem;
 import net.md_5.bungee.api.ProxyServer;
@@ -17,15 +17,17 @@ public class AnnouncementManager implements AnnounceManager {
 
 
     private Map<String, Announcer> announceMap;
-    private ConfigManager configManager;
+    private AnnounceConfig announceConfig;
+    private String suggestSendMsg;
 
     public AnnouncementManager() {
-        this.configManager = MSGSystem.getApi().getConfigManager();
+        this.announceConfig = MSGSystem.getApi().getConfigManager().getConfigAs(AnnounceConfig.class);
         this.reloadAnnouncer();
     }
 
     public void reloadAnnouncer() {
-        this.announceMap = configManager.getDataMap("am", String.class, Announcer.class);
+        this.announceMap = announceConfig.getAnnouncerMap();
+        this.suggestSendMsg = MSGSystem.getApi().getConfigManager().getMessage("suggest-send");
     }
 
 
@@ -62,7 +64,7 @@ public class AnnouncementManager implements AnnounceManager {
             if (info == null) return new MessageBuilder(teleport[0]).build();
             String name = MSGSystem.getApi().getPMManager().getDisplayAlias().get(info.getName());
             if (name == null) name = info.getName();
-            return new MessageBuilder(msg).hoverText(configManager.getPureMessage("suggest-send").replace("<server>", name)).run(proxiedPlayer -> proxiedPlayer.connect(info)).build();
+            return new MessageBuilder(msg).hoverText(suggestSendMsg.replace("<server>", name)).run(proxiedPlayer -> proxiedPlayer.connect(info)).build();
         }).collect(Collectors.toList());
         List<String> infos = announcer.getServerInfos();
         Collection<ProxiedPlayer> playersToSend;

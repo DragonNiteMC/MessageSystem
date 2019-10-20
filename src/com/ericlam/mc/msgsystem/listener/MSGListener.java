@@ -1,36 +1,66 @@
 package com.ericlam.mc.msgsystem.listener;
 
 import com.ericlam.mc.bungee.hnmc.builders.AdvMessageBuilder;
-import com.ericlam.mc.bungee.hnmc.config.ConfigManager;
+import com.ericlam.mc.bungee.hnmc.builders.MessageBuilder;
+import com.ericlam.mc.bungee.hnmc.config.YamlManager;
+import com.ericlam.mc.msgsystem.api.ChannelManager;
 import com.ericlam.mc.msgsystem.api.ChatSpyManager;
-import com.ericlam.mc.msgsystem.api.MessageSystemAPI;
 import com.ericlam.mc.msgsystem.api.PMManager;
 import com.ericlam.mc.msgsystem.api.PlayerIgnoreManager;
 import com.ericlam.mc.msgsystem.events.PrivateMessageEvent;
+import com.ericlam.mc.msgsystem.main.MSGSystem;
+import com.google.inject.Inject;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.event.ServerDisconnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 
-public class MSGListener implements Listener {
+public class MSGListener implements Listener, ChannelManager {
 
+    @Inject
     private PlayerIgnoreManager playerIgnoreManager;
 
+    @Inject
     private PMManager pmManager;
 
+    @Inject
     private ChatSpyManager chatSpyManager;
 
-    private ConfigManager configManager;
+    private YamlManager configManager;
 
+    private Map<String, Channel> channelMap = new ConcurrentHashMap<>();
 
-    public MSGListener(MessageSystemAPI api) {
-        this.playerIgnoreManager = api.getPlayerIgnoreManager();
-        this.pmManager = api.getPMManager();
-        this.chatSpyManager = api.getChatSpyManager();
-        this.configManager = api.getConfigManager();
+    public MSGListener() {
+        this.configManager = MSGSystem.getApi().getConfigManager();
+    }
+
+    @EventHandler
+    public void onPlayerChat(final ChatEvent e) {
+        if (!e.getMessage().startsWith("#") || !(e.getSender() instanceof ProxiedPlayer)) return;
+        ProxiedPlayer sender = (ProxiedPlayer) e.getSender();
+        e.setCancelled(true);
+        String line = e.getMessage().substring(1);
+        String[] str = line.split(" ");
+        String name = str[0];
+        String msg = String.join(" ", Arrays.copyOfRange(str, 1, str.length));
+        this.handleChannel(sender, name, msg);
+    }
+
+    @Override
+    public void registerChannel(String channel, String format, Predicate<ProxiedPlayer> playerPredicate) {
+        Channel chan = new Channel(playerPredicate, format);
+        this.channelMap.putIfAbsent(channel, chan);
     }
 
     @EventHandler
@@ -57,5 +87,34 @@ public class MSGListener implements Listener {
             if (p.equals(e.getTarget()) || p.equals(e.getPlayer())) return;
             new AdvMessageBuilder(configManager.getPureMessage("msg.spy.prefix")).add(e.getLine()).sendPlayer(p);
         });
+    }
+
+    @Override
+    public void unregisterChannel(String channel) {
+        this.channelMap.remove(channel);
+    }
+
+    @Override
+    public void handleChannel(ProxiedPlayer sender, String channel, String message) {
+        Channel chan = this.channelMap.get(channel);
+        if (chan == null || !chan.predicate.test(sender)) {
+            new MessageBuilder(configManager.getMessage("msg.unknown-channel").replace("<channel>", channel)).sendPlayer(sender);
+            return;
+        }
+        String[] format = chan.format.split("%player%");
+        MessageBuilder player = new MessageBuilder(sender.getDisplayName()).hoverText(pmManager.getInfo(sender));
+        TextComponent text = new AdvMessageBuilder(format[0]).add(player).add(format[1]).add(message).build();
+        Collection<ProxiedPlayer> online = ProxyServer.getInstance().getPlayers();
+        online.stream().filter(pp -> chan.predicate.test(pp)).forEach(pp -> pp.sendMessage(text));
+    }
+
+    private static class Channel {
+        private Predicate<ProxiedPlayer> predicate;
+        private String format;
+
+        private Channel(Predicate<ProxiedPlayer> predicate, String format) {
+            this.predicate = predicate;
+            this.format = format;
+        }
     }
 }

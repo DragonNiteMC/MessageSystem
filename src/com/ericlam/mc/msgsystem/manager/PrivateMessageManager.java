@@ -3,10 +3,11 @@ package com.ericlam.mc.msgsystem.manager;
 import com.ericlam.mc.bungee.hnmc.SQLDataSource;
 import com.ericlam.mc.bungee.hnmc.builders.AdvMessageBuilder;
 import com.ericlam.mc.bungee.hnmc.builders.MessageBuilder;
-import com.ericlam.mc.bungee.hnmc.config.ConfigManager;
+import com.ericlam.mc.bungee.hnmc.config.YamlManager;
 import com.ericlam.mc.bungee.hnmc.main.HyperNiteMC;
 import com.ericlam.mc.msgsystem.api.PMManager;
 import com.ericlam.mc.msgsystem.api.PlayerIgnoreManager;
+import com.ericlam.mc.msgsystem.config.MSGConfig;
 import com.ericlam.mc.msgsystem.events.PrivateMessageEvent;
 import com.ericlam.mc.msgsystem.main.MSGSystem;
 import me.lucko.luckperms.LuckPerms;
@@ -19,7 +20,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class PrivateMessageManager implements PMManager {
@@ -27,11 +31,13 @@ public class PrivateMessageManager implements PMManager {
     private Map<UUID, ProxiedPlayer> lastMessage = new HashMap<>();
     private Map<UUID, Boolean> pmDisabled = new HashMap<>();
 
-    private ConfigManager configManager;
+    private YamlManager configManager;
+    private MSGConfig msgConfig;
     private SQLDataSource sqlDataSource;
 
     public PrivateMessageManager() {
         this.configManager = MSGSystem.getApi().getConfigManager();
+        this.msgConfig = configManager.getConfigAs(MSGConfig.class);
         this.sqlDataSource = HyperNiteMC.getAPI().getSQLDataSource();
         CompletableFuture.runAsync(() -> {
             try (Connection connection = sqlDataSource.getConnection();
@@ -116,7 +122,7 @@ public class PrivateMessageManager implements PMManager {
         User user = LuckPerms.getApi().getUser(player.getUniqueId());
         String group = user == null ? "§c[! 加載失敗]" : this.getGroupAlias().containsKey(user.getPrimaryGroup()) ? this.getGroupAlias().get(user.getPrimaryGroup()) : user.getPrimaryGroup();
         String server = Optional.ofNullable(this.getDisplayAlias().get(player.getServer().getInfo().getName())).orElse(player.getServer().getInfo().getName());
-        return Arrays.stream(configManager.getMessageList("player-info", false))
+        return msgConfig.playerInfo.stream()
                 .map(line -> line
                         .replace("<sender>", player.getDisplayName())
                         .replace("<server>", server)
@@ -137,12 +143,12 @@ public class PrivateMessageManager implements PMManager {
 
     @Override
     public Map<String, String> getDisplayAlias() {
-        return configManager.getDataMap("sa", String.class, String.class);
+        return msgConfig.groupAlias;
     }
 
     @Override
     public Map<String, String> getGroupAlias() {
-        return configManager.getDataMap("ga", String.class, String.class);
+        return msgConfig.serverAlias;
     }
 
     @Override

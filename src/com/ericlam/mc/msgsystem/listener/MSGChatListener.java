@@ -1,8 +1,9 @@
 package com.ericlam.mc.msgsystem.listener;
 
 import com.ericlam.mc.bungee.hnmc.builders.MessageBuilder;
-import com.ericlam.mc.bungee.hnmc.config.ConfigManager;
+import com.ericlam.mc.bungee.hnmc.config.YamlManager;
 import com.ericlam.mc.msgsystem.api.IllegalChatManager;
+import com.ericlam.mc.msgsystem.config.ChatConfig;
 import com.ericlam.mc.msgsystem.main.MSGSystem;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
@@ -13,10 +14,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,19 +25,22 @@ public class MSGChatListener implements Listener, IllegalChatManager {
 
     private final Pattern IP_PATTERN = Pattern.compile("(?:[0-9]{1,3}( ?\\. ?|\\(?dot\\)?)){3}[0-9]{1,3}");
     private final Pattern DOMAIN_PATTERN = Pattern.compile("(http(s)?:\\/\\/.)?(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}( ?\\. ?| ?\\(?dot\\)? ?)[a-z]{2,6}\\b([-a-zA-Z0-9@:%_+.~#?&/=]*)");
-    private ConfigManager configManager;
-    private Map<UUID, LocalDateTime> antiSpam = new HashMap<>();
-    private Map<UUID, Integer> spamDuplicateMap = new HashMap<>();
-    private Map<UUID, Duplication> duplicationMap = new HashMap<>();
+    private YamlManager configManager;
+    private Map<UUID, LocalDateTime> antiSpam = new ConcurrentHashMap<>();
+    private Map<UUID, Integer> spamDuplicateMap = new ConcurrentHashMap<>();
+    private Map<UUID, Duplication> duplicationMap = new ConcurrentHashMap<>();
+    private ChatConfig chatConfig;
 
     public MSGChatListener() {
         this.configManager = MSGSystem.getApi().getConfigManager();
+        this.chatConfig = configManager.getConfigAs(ChatConfig.class);
     }
 
     @EventHandler
     public void onPlayerChat(final ChatEvent e) {
         if (e.isCommand()) return;
         if (!(e.getSender() instanceof ProxiedPlayer)) return;
+        if (e.getMessage().startsWith("#")) return; //for channel
         ProxiedPlayer player = (ProxiedPlayer) e.getSender();
         if (this.antiSpam(player, e)) return;
         if (this.antiDuplicate(player, e)) return;
@@ -46,14 +50,14 @@ public class MSGChatListener implements Listener, IllegalChatManager {
 
     @Override
     public boolean antiSpam(ProxiedPlayer player, final ChatEvent e) {
-        long chatCooldown = configManager.getData("cooldown-chat", Long.class).orElse(1000L);
+        long chatCooldown = chatConfig.cooldownChat;
         if (!antiSpam.containsKey(player.getUniqueId())) {
             antiSpam.put(player.getUniqueId(), LocalDateTime.now());
             return false;
         }
         LocalDateTime previousTalkTime = antiSpam.get(player.getUniqueId());
         Duration duration = Duration.between(previousTalkTime, LocalDateTime.now());
-        final long dupMax = configManager.getData("anti-spam-duplicate", Long.class).orElse(5L);
+        final long dupMax = chatConfig.duplicateMax;
         if (duration.toMillis() >= chatCooldown) {
             antiSpam.put(player.getUniqueId(), LocalDateTime.now());
             if (spamDuplicateMap.getOrDefault(player.getUniqueId(), 0) > dupMax)
@@ -65,7 +69,7 @@ public class MSGChatListener implements Listener, IllegalChatManager {
         MessageBuilder.sendMessage(player, configManager.getMessage("msg.chat.too-fast").replace("<sec>", sec + ""));
         this.spamDuplicateMap.putIfAbsent(player.getUniqueId(), 0);
         this.spamDuplicateMap.computeIfPresent(player.getUniqueId(), (d, i) -> ++i);
-        if (this.spamDuplicateMap.get(player.getUniqueId()) >= configManager.getData("anti-spam-duplicate", Long.class).orElse(5L)) {
+        if (this.spamDuplicateMap.get(player.getUniqueId()) >= chatConfig.antiSpamDuplicate) {
             antiSpam.put(player.getUniqueId(), LocalDateTime.now());
         }
         return true;
@@ -73,8 +77,8 @@ public class MSGChatListener implements Listener, IllegalChatManager {
 
     @Override
     public boolean antiAdvertise(ProxiedPlayer player, final ChatEvent e) {
-        List<String> ipWhitelist = configManager.getDataList("whitelist-ip", String.class);
-        List<String> domainWhitelist = configManager.getDataList("whitelist-domain", String.class);
+        List<String> ipWhitelist = chatConfig.whitelist.get("ips");
+        List<String> domainWhitelist = chatConfig.whitelist.get("domains");
         boolean cancel;
         final String line = e.getMessage();
         Matcher ipMatcher = IP_PATTERN.matcher(line);
@@ -89,7 +93,7 @@ public class MSGChatListener implements Listener, IllegalChatManager {
 
     @Override
     public boolean antiCharDuplicate(ProxiedPlayer player, final ChatEvent e) {
-        int spamChatMax = configManager.getData("spam-char-max", int.class).orElse(30);
+        int spamChatMax = chatConfig.spamCharMax;
         final String message = e.getMessage();
         int i = 0;
         char previousChar = '\u0000';
@@ -132,7 +136,7 @@ public class MSGChatListener implements Listener, IllegalChatManager {
             } else {
                 duplication = new Duplication(1, e.getMessage());
             }
-            int duplicate = configManager.getData("duplicate-max", Integer.class).orElse(3);
+            int duplicate = chatConfig.duplicateMax;
             cancel = duplication.duplicated >= duplicate;
             if (cancel) {
                 e.setCancelled(true);
@@ -157,7 +161,7 @@ public class MSGChatListener implements Listener, IllegalChatManager {
         return cancel;
     }
 
-    private class Duplication {
+    private static class Duplication {
 
         private int duplicated;
         private String message;

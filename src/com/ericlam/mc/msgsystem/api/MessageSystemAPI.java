@@ -1,14 +1,16 @@
 package com.ericlam.mc.msgsystem.api;
 
-import com.ericlam.mc.bungee.hnmc.config.ConfigManager;
+import com.ericlam.mc.bungee.hnmc.config.YamlManager;
 
 public interface MessageSystemAPI {
 
     PlayerIgnoreManager getPlayerIgnoreManager();
 
-    ConfigManager getConfigManager();
+    YamlManager getConfigManager();
 
     ListSerializer getListSerializer();
+
+    ChannelManager getChannelManager();
 
     PMManager getPMManager();
 

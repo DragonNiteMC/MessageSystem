@@ -2,6 +2,7 @@ duplicate-max: 3
 cooldown-chat: 1000
 anti-spam-duplicate: 3
 spam-char-max: 30
+command-cooldown: 3000
 
 whitelist:
   ips:

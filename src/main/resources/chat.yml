@@ -1,0 +1,13 @@
+duplicateMax: 3
+cooldownChat: 1000
+antiSpamDuplicate: 3
+spamCharMax: 30
+commandCooldown: 3000
+
+whitelist:
+  ips:
+    - "127.0.0.1"
+  domains:
+    - "hypernite.com"
+    - "hypernology.com"
+    - "youtube.com"

@@ -25,11 +25,12 @@ public class AnnouncementManager implements AnnounceManager {
     public AnnouncementManager() {
         this.announceConfig = MSGSystem.getApi().getConfigManager().getConfigAs(AnnounceConfig.class);
         this.msg = MSGSystem.getApi().getConfigManager().getConfigAs(MSGConfig.class);
-        this.reloadAnnouncer();
+        this.announceMap = announceConfig.announces;
+        this.suggestSendMsg = msg.get("suggest-send");
     }
 
     public void reloadAnnouncer() {
-        this.announceMap = announceConfig.getAnnouncerMap();
+        this.announceMap = announceConfig.announces;
         this.suggestSendMsg = msg.get("suggest-send");
     }
 

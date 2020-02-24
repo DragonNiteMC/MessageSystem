@@ -3,7 +3,7 @@
 
     <groupId>com.ericlam.mc</groupId>
     <artifactId>MessageSystem</artifactId>
-    <version>0.3.7</version>
+    <version>0.3.8</version>
 
     <repositories>
         <repository>
@@ -44,6 +44,7 @@
     </dependencies>
 
     <build>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

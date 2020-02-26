@@ -1,5 +1,7 @@
 package com.ericlam.mc.msgsystem.config;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -14,6 +16,8 @@ public class Announcer {
     private String servers;
     private long delay;
 
+
+    @JsonIgnore
     private LocalDateTime timer = LocalDateTime.now();
 
     public Map<String, List<String>> getMessages() {

@@ -144,12 +144,12 @@ public class PrivateMessageManager implements PMManager {
 
     @Override
     public Map<String, String> getDisplayAlias() {
-        return msg.groupAlias;
+        return msg.serverAlias;
     }
 
     @Override
     public Map<String, String> getGroupAlias() {
-        return msg.serverAlias;
+        return msg.groupAlias;
     }
 
     @Override

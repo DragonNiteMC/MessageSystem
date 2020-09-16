@@ -18,9 +18,9 @@ public class AnnouncementManager implements AnnounceManager {
 
 
     private Map<String, Announcer> announceMap;
-    private AnnounceConfig announceConfig;
+    private final AnnounceConfig announceConfig;
     private String suggestSendMsg;
-    private MSGConfig msg;
+    private final MSGConfig msg;
 
     public AnnouncementManager() {
         this.announceConfig = MSGSystem.getApi().getConfigManager().getConfigAs(AnnounceConfig.class);

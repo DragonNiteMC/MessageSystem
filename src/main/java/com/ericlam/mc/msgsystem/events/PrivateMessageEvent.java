@@ -6,9 +6,9 @@ import net.md_5.bungee.api.plugin.Cancellable;
 
 public class PrivateMessageEvent extends PlayerEvent implements Cancellable {
 
-    private ProxiedPlayer target;
-    private TextComponent line;
-    private String message;
+    private final ProxiedPlayer target;
+    private final TextComponent line;
+    private final String message;
     private boolean cancel;
 
     public PrivateMessageEvent(ProxiedPlayer player, ProxiedPlayer target, TextComponent line, String message) {

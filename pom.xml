@@ -12,15 +12,15 @@
         </repository>
         <repository>
             <id>xuan</id>
-            <url>http://xuan.nctu.me:8081/repository/Maven/</url>
+            <url>https://xuan.nctu.me:8081/repository/Maven/</url>
         </repository>
     </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-api</artifactId>
-            <version>1.14-SNAPSHOT</version>
+            <groupId>waterfall</groupId>
+            <artifactId>1.16</artifactId>
+            <version>376</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -38,13 +38,12 @@
         <dependency>
             <groupId>net.luckperms</groupId>
             <artifactId>api</artifactId>
-            <version>5.0</version>
+            <version>5.1</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
 
     <build>
-        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

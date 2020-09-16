@@ -38,9 +38,9 @@ public class MSGListener implements Listener, ChannelManager {
     @Inject
     private ChatSpyManager chatSpyManager;
 
-    private MSGConfig msg;
+    private final MSGConfig msg;
 
-    private Map<String, Channel> channelMap = new ConcurrentHashMap<>();
+    private final Map<String, Channel> channelMap = new ConcurrentHashMap<>();
 
     public MSGListener() {
         YamlManager configManager = MSGSystem.getApi().getConfigManager();

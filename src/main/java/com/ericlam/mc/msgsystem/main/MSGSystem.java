@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 public class MSGSystem extends Plugin implements MessageSystemAPI {
 
     private static MessageSystemAPI api;
-    private ModuleImplement moduleImplement = new ModuleImplement();
+    private final ModuleImplement moduleImplement = new ModuleImplement();
     private YamlManager configManager;
     private PlayerIgnoreManager playerIgnoreManager;
     private ListSerializer listSerializer;

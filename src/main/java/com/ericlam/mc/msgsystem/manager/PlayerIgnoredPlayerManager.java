@@ -17,9 +17,9 @@ import java.util.concurrent.CompletableFuture;
 
 public class PlayerIgnoredPlayerManager implements PlayerIgnoreManager {
 
-    private Map<UUID, List<OfflinePlayer>> ignoredList = new HashMap<>();
+    private final Map<UUID, List<OfflinePlayer>> ignoredList = new HashMap<>();
 
-    private SQLDataSource sqlDataSource;
+    private final SQLDataSource sqlDataSource;
 
     @Inject
     private ListSerializer listSerializer;
@@ -86,13 +86,13 @@ public class PlayerIgnoredPlayerManager implements PlayerIgnoreManager {
 
 
     public void saveUsersTask() {
-        ignoredList.forEach((k, v) -> {
-            try (Connection connection = sqlDataSource.getConnection()) {
-                this.saveUserSingle(connection, k);
-            } catch (SQLException e) {
-                e.printStackTrace();
+        try (Connection connection = sqlDataSource.getConnection()) {
+            for (UUID key : ignoredList.keySet()) {
+                saveUserSingle(connection, key);
             }
-        });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

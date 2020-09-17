@@ -107,12 +107,12 @@ public class MSGListener implements Listener, ChannelManager {
         MessageBuilder player = new MessageBuilder(sender.getDisplayName()).hoverText(pmManager.getInfo(sender));
         TextComponent text = new AdvMessageBuilder(format[0]).add(player).add(format[1]).add(message).build();
         Collection<ProxiedPlayer> online = ProxyServer.getInstance().getPlayers();
-        online.stream().filter(pp -> chan.predicate.test(pp)).forEach(pp -> pp.sendMessage(text));
+        online.stream().filter(chan.predicate).forEach(pp -> pp.sendMessage(text));
     }
 
     private static class Channel {
-        private Predicate<ProxiedPlayer> predicate;
-        private String format;
+        private final Predicate<ProxiedPlayer> predicate;
+        private final String format;
 
         private Channel(Predicate<ProxiedPlayer> predicate, String format) {
             this.predicate = predicate;

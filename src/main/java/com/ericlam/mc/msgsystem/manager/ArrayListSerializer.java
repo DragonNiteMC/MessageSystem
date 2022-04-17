@@ -1,6 +1,6 @@
 package com.ericlam.mc.msgsystem.manager;
 
-import com.ericlam.mc.bungee.hnmc.container.OfflinePlayer;
+import com.ericlam.mc.bungee.dnmc.container.OfflinePlayer;
 import com.ericlam.mc.msgsystem.api.ListSerializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

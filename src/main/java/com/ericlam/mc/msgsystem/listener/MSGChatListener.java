@@ -1,7 +1,7 @@
 package com.ericlam.mc.msgsystem.listener;
 
-import com.ericlam.mc.bungee.hnmc.builders.MessageBuilder;
-import com.ericlam.mc.bungee.hnmc.config.YamlManager;
+import com.ericlam.mc.bungee.dnmc.builders.MessageBuilder;
+import com.ericlam.mc.bungee.dnmc.config.YamlManager;
 import com.ericlam.mc.msgsystem.api.IllegalChatManager;
 import com.ericlam.mc.msgsystem.config.ChatConfig;
 import com.ericlam.mc.msgsystem.config.MSGConfig;

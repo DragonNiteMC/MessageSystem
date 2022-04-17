@@ -1,8 +1,8 @@
 package com.ericlam.mc.msgsystem.config;
 
-import com.ericlam.mc.bungee.hnmc.config.yaml.MessageConfiguration;
-import com.ericlam.mc.bungee.hnmc.config.yaml.Prefix;
-import com.ericlam.mc.bungee.hnmc.config.yaml.Resource;
+import com.ericlam.mc.bungee.dnmc.config.yaml.MessageConfiguration;
+import com.ericlam.mc.bungee.dnmc.config.yaml.Prefix;
+import com.ericlam.mc.bungee.dnmc.config.yaml.Resource;
 
 import java.util.List;
 import java.util.Map;

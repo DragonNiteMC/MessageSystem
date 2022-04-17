@@ -1,7 +1,7 @@
 package com.ericlam.mc.msgsystem.commands;
 
-import com.ericlam.mc.bungee.hnmc.builders.MessageBuilder;
-import com.ericlam.mc.bungee.hnmc.permission.Perm;
+import com.ericlam.mc.bungee.dnmc.builders.MessageBuilder;
+import com.ericlam.mc.bungee.dnmc.permission.Perm;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 

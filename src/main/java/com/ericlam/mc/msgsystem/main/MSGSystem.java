@@ -1,8 +1,8 @@
 package com.ericlam.mc.msgsystem.main;
 
-import com.ericlam.mc.bungee.hnmc.commands.caxerx.CommandRegister;
-import com.ericlam.mc.bungee.hnmc.config.YamlManager;
-import com.ericlam.mc.bungee.hnmc.main.HyperNiteMC;
+import com.ericlam.mc.bungee.dnmc.commands.caxerx.CommandRegister;
+import com.ericlam.mc.bungee.dnmc.config.YamlManager;
+import com.ericlam.mc.bungee.dnmc.main.DragonNiteMC;
 import com.ericlam.mc.msgsystem.ModuleImplement;
 import com.ericlam.mc.msgsystem.api.*;
 import com.ericlam.mc.msgsystem.commands.*;
@@ -45,7 +45,7 @@ public class MSGSystem extends Plugin implements MessageSystemAPI {
 
     @Override
     public void onLoad() {
-        configManager = HyperNiteMC.getAPI().getConfigFactory(this)
+        configManager = DragonNiteMC.getAPI().getConfigFactory(this)
                 .register("config.yml", MSGConfig.class)
                 .register("chat.yml", ChatConfig.class)
                 .register("announce.yml", AnnounceConfig.class).dump();
@@ -64,7 +64,7 @@ public class MSGSystem extends Plugin implements MessageSystemAPI {
     public void onEnable() {
         this.getProxy().getPluginManager().registerListener(this, (MSGListener) channelManager);
         this.getProxy().getPluginManager().registerListener(this, (MSGChatListener) illegalChatManager);
-        CommandRegister register = HyperNiteMC.getAPI().getCommandRegister();
+        CommandRegister register = DragonNiteMC.getAPI().getCommandRegister();
         register.registerCommand(this, new IgnorePMCommand());
         register.registerCommand(this, new MessageCommand());
         register.registerCommand(this, new ReloadCommand());

@@ -1,6 +1,6 @@
 package com.ericlam.mc.msgsystem.api;
 
-import com.ericlam.mc.bungee.hnmc.container.OfflinePlayer;
+import com.ericlam.mc.bungee.dnmc.container.OfflinePlayer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.List;

@@ -1,10 +1,10 @@
 package com.ericlam.mc.msgsystem.commands.staff;
 
-import com.ericlam.mc.bungee.hnmc.builders.MessageBuilder;
-import com.ericlam.mc.bungee.hnmc.commands.caxerx.CommandNode;
-import com.ericlam.mc.bungee.hnmc.container.OfflinePlayer;
-import com.ericlam.mc.bungee.hnmc.main.HyperNiteMC;
-import com.ericlam.mc.bungee.hnmc.permission.Perm;
+import com.ericlam.mc.bungee.dnmc.builders.MessageBuilder;
+import com.ericlam.mc.bungee.dnmc.commands.caxerx.CommandNode;
+import com.ericlam.mc.bungee.dnmc.container.OfflinePlayer;
+import com.ericlam.mc.bungee.dnmc.main.DragonNiteMC;
+import com.ericlam.mc.bungee.dnmc.permission.Perm;
 import com.ericlam.mc.msgsystem.commands.MSGSystemCommandNode;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -20,9 +20,9 @@ public class IgnoreListCommand extends MSGSystemCommandNode {
     @Override
     public void executionPlayer(ProxiedPlayer player, List<String> list) {
         String name = list.get(0);
-        HyperNiteMC.getAPI().getPlayerManager().getOfflinePlayer(name).whenComplete((off, ex) -> {
+        DragonNiteMC.getAPI().getPlayerManager().getOfflinePlayer(name).whenComplete((off, ex) -> {
             if (off.isEmpty()) {
-                MessageBuilder.sendMessage(player, HyperNiteMC.getAPI().getMainConfig().getNoThisPlayer());
+                MessageBuilder.sendMessage(player, DragonNiteMC.getAPI().getMainConfig().getNoThisPlayer());
                 return;
             }
 

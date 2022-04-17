@@ -2,4 +2,4 @@ name: MessageSystem
 main: com.ericlam.mc.msgsystem.main.MSGSystem
 version: ${project.version}
 author: Hydranapse_
-depends: [HyperNiteMC-Bungee, LuckPerms]
+depends: [DragonNiteMC-Bungee, LuckPerms]

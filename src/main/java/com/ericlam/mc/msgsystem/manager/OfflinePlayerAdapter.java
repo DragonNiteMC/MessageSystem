@@ -1,6 +1,6 @@
 package com.ericlam.mc.msgsystem.manager;
 
-import com.ericlam.mc.bungee.hnmc.container.OfflinePlayer;
+import com.ericlam.mc.bungee.dnmc.container.OfflinePlayer;
 import com.google.gson.*;
 
 import java.lang.reflect.Constructor;

@@ -1,8 +1,8 @@
 package com.ericlam.mc.msgsystem.commands;
 
-import com.ericlam.mc.bungee.hnmc.builders.MessageBuilder;
-import com.ericlam.mc.bungee.hnmc.commands.caxerx.CommandNode;
-import com.ericlam.mc.bungee.hnmc.permission.Perm;
+import com.ericlam.mc.bungee.dnmc.builders.MessageBuilder;
+import com.ericlam.mc.bungee.dnmc.commands.caxerx.CommandNode;
+import com.ericlam.mc.bungee.dnmc.permission.Perm;
 import com.ericlam.mc.msgsystem.config.MSGConfig;
 import com.ericlam.mc.msgsystem.main.MSGSystem;
 import net.md_5.bungee.api.CommandSender;

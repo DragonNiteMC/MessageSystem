@@ -1,8 +1,8 @@
 package com.ericlam.mc.msgsystem.commands;
 
-import com.ericlam.mc.bungee.hnmc.builders.MessageBuilder;
-import com.ericlam.mc.bungee.hnmc.container.OfflinePlayer;
-import com.ericlam.mc.bungee.hnmc.main.HyperNiteMC;
+import com.ericlam.mc.bungee.dnmc.builders.MessageBuilder;
+import com.ericlam.mc.bungee.dnmc.container.OfflinePlayer;
+import com.ericlam.mc.bungee.dnmc.main.DragonNiteMC;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -28,7 +28,7 @@ public class IgnorePMCommand extends MSGSystemCommandNode {
                 MessageBuilder.sendMessage(player, msg.get("msg.send-self"));
                 return;
             }
-            HyperNiteMC.getAPI().getPlayerManager().getOfflinePlayer(name).whenComplete(((offlinePlayer, throwable) -> {
+            DragonNiteMC.getAPI().getPlayerManager().getOfflinePlayer(name).whenComplete(((offlinePlayer, throwable) -> {
                 if (throwable != null) {
                     throwable.printStackTrace();
                     MessageBuilder.sendMessage(player, ChatColor.RED + throwable.getMessage());
@@ -36,7 +36,7 @@ public class IgnorePMCommand extends MSGSystemCommandNode {
                 }
 
                 if (offlinePlayer.isEmpty()) {
-                    MessageBuilder.sendMessage(player, HyperNiteMC.getAPI().getMainConfig().getNoThisPlayer());
+                    MessageBuilder.sendMessage(player, DragonNiteMC.getAPI().getMainConfig().getNoThisPlayer());
                     return;
                 }
 

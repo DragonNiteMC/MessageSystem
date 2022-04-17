@@ -1,8 +1,8 @@
 package com.ericlam.mc.msgsystem.commands;
 
-import com.ericlam.mc.bungee.hnmc.builders.MessageBuilder;
-import com.ericlam.mc.bungee.hnmc.main.HyperNiteMC;
-import com.ericlam.mc.bungee.hnmc.permission.Perm;
+import com.ericlam.mc.bungee.dnmc.builders.MessageBuilder;
+import com.ericlam.mc.bungee.dnmc.main.DragonNiteMC;
+import com.ericlam.mc.bungee.dnmc.permission.Perm;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -23,13 +23,13 @@ public class TogglePMCommand extends MSGSystemCommandNode {
             MessageBuilder.sendMessage(player, msg.get(path));
         } else {
             if (!player.hasPermission(Perm.MOD)) {
-                MessageBuilder.sendMessage(player, HyperNiteMC.getAPI().getMainConfig().getNoPermission());
+                MessageBuilder.sendMessage(player, DragonNiteMC.getAPI().getMainConfig().getNoPermission());
                 return;
             }
             String name = list.get(0);
             ProxiedPlayer target = ProxyServer.getInstance().getPlayer(name);
             if (target == null) {
-                MessageBuilder.sendMessage(player, HyperNiteMC.getAPI().getMainConfig().getNoThisPlayer());
+                MessageBuilder.sendMessage(player, DragonNiteMC.getAPI().getMainConfig().getNoThisPlayer());
                 return;
             }
             final boolean previousToggle = pmManager.isDisabledPM(target);

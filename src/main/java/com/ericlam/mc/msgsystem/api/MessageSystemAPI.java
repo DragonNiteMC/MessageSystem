@@ -1,6 +1,6 @@
 package com.ericlam.mc.msgsystem.api;
 
-import com.ericlam.mc.bungee.hnmc.config.YamlManager;
+import com.ericlam.mc.bungee.dnmc.config.YamlManager;
 
 public interface MessageSystemAPI {
 

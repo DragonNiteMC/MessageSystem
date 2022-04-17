@@ -1,6 +1,6 @@
 package com.ericlam.mc.msgsystem.manager;
 
-import com.ericlam.mc.bungee.hnmc.builders.MessageBuilder;
+import com.ericlam.mc.bungee.dnmc.builders.MessageBuilder;
 import com.ericlam.mc.msgsystem.api.AnnounceManager;
 import com.ericlam.mc.msgsystem.config.AnnounceConfig;
 import com.ericlam.mc.msgsystem.config.Announcer;

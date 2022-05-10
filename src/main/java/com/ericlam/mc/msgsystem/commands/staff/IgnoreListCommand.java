@@ -3,7 +3,7 @@ package com.ericlam.mc.msgsystem.commands.staff;
 import com.ericlam.mc.bungee.dnmc.builders.MessageBuilder;
 import com.ericlam.mc.bungee.dnmc.commands.caxerx.CommandNode;
 import com.ericlam.mc.bungee.dnmc.container.OfflinePlayer;
-import com.ericlam.mc.bungee.dnmc.main.DragonNiteMC;
+import com.ericlam.mc.bungee.dnmc.main.DragoniteMC;
 import com.ericlam.mc.bungee.dnmc.permission.Perm;
 import com.ericlam.mc.msgsystem.commands.MSGSystemCommandNode;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -20,9 +20,9 @@ public class IgnoreListCommand extends MSGSystemCommandNode {
     @Override
     public void executionPlayer(ProxiedPlayer player, List<String> list) {
         String name = list.get(0);
-        DragonNiteMC.getAPI().getPlayerManager().getOfflinePlayer(name).whenComplete((off, ex) -> {
+        DragoniteMC.getAPI().getPlayerManager().getOfflinePlayer(name).whenComplete((off, ex) -> {
             if (off.isEmpty()) {
-                MessageBuilder.sendMessage(player, DragonNiteMC.getAPI().getMainConfig().getNoThisPlayer());
+                MessageBuilder.sendMessage(player, DragoniteMC.getAPI().getMainConfig().getNoThisPlayer());
                 return;
             }
 

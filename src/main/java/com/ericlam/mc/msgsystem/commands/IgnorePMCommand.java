@@ -2,7 +2,7 @@ package com.ericlam.mc.msgsystem.commands;
 
 import com.ericlam.mc.bungee.dnmc.builders.MessageBuilder;
 import com.ericlam.mc.bungee.dnmc.container.OfflinePlayer;
-import com.ericlam.mc.bungee.dnmc.main.DragonNiteMC;
+import com.ericlam.mc.bungee.dnmc.main.DragoniteMC;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -28,7 +28,7 @@ public class IgnorePMCommand extends MSGSystemCommandNode {
                 MessageBuilder.sendMessage(player, msg.get("msg.send-self"));
                 return;
             }
-            DragonNiteMC.getAPI().getPlayerManager().getOfflinePlayer(name).whenComplete(((offlinePlayer, throwable) -> {
+            DragoniteMC.getAPI().getPlayerManager().getOfflinePlayer(name).whenComplete(((offlinePlayer, throwable) -> {
                 if (throwable != null) {
                     throwable.printStackTrace();
                     MessageBuilder.sendMessage(player, ChatColor.RED + throwable.getMessage());
@@ -36,7 +36,7 @@ public class IgnorePMCommand extends MSGSystemCommandNode {
                 }
 
                 if (offlinePlayer.isEmpty()) {
-                    MessageBuilder.sendMessage(player, DragonNiteMC.getAPI().getMainConfig().getNoThisPlayer());
+                    MessageBuilder.sendMessage(player, DragoniteMC.getAPI().getMainConfig().getNoThisPlayer());
                     return;
                 }
 

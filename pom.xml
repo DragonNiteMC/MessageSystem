@@ -2,8 +2,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ericlam.mc</groupId>
-    <artifactId>MessageSystem</artifactId>
-    <version>0.3.9</version>
+    <artifactId>messagesystem</artifactId>
+    <version>0.4.0</version>
 
     <repositories>
         <repository>
@@ -11,7 +11,7 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
         <repository>
-            <id>dragonnite</id>
+            <id>dragonite</id>
             <url>https://nexus.pulogo.xyz/repository/developer/</url>
         </repository>
     </repositories>
@@ -24,9 +24,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.dragonnite.mc</groupId>
+            <groupId>com.dragonite.mc</groupId>
             <artifactId>bungee-api</artifactId>
-            <version>2.6.3</version>
+            <version>2.6.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -53,10 +53,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.10.1</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>18</source>
+                    <target>18</target>
                 </configuration>
             </plugin>
         </plugins>

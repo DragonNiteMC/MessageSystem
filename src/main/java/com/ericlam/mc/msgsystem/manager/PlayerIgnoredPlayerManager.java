@@ -2,7 +2,7 @@ package com.ericlam.mc.msgsystem.manager;
 
 import com.ericlam.mc.bungee.dnmc.SQLDataSource;
 import com.ericlam.mc.bungee.dnmc.container.OfflinePlayer;
-import com.ericlam.mc.bungee.dnmc.main.DragonNiteMC;
+import com.ericlam.mc.bungee.dnmc.main.DragoniteMC;
 import com.ericlam.mc.msgsystem.api.ListSerializer;
 import com.ericlam.mc.msgsystem.api.PlayerIgnoreManager;
 import com.google.inject.Inject;
@@ -25,7 +25,7 @@ public class PlayerIgnoredPlayerManager implements PlayerIgnoreManager {
     private ListSerializer listSerializer;
 
     public PlayerIgnoredPlayerManager() {
-        this.sqlDataSource = DragonNiteMC.getAPI().getSQLDataSource();
+        this.sqlDataSource = DragoniteMC.getAPI().getSQLDataSource();
         CompletableFuture.runAsync(() -> {
             try (Connection connection = sqlDataSource.getConnection();
                  PreparedStatement statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS `MSG_Ignore_table` (`uuid` VARCHAR(40) PRIMARY KEY NOT NULL, `list` TEXT NOT NULL )")) {

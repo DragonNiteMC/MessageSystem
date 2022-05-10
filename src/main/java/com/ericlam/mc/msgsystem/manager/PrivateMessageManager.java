@@ -4,7 +4,7 @@ import com.ericlam.mc.bungee.dnmc.SQLDataSource;
 import com.ericlam.mc.bungee.dnmc.builders.AdvMessageBuilder;
 import com.ericlam.mc.bungee.dnmc.builders.MessageBuilder;
 import com.ericlam.mc.bungee.dnmc.config.YamlManager;
-import com.ericlam.mc.bungee.dnmc.main.DragonNiteMC;
+import com.ericlam.mc.bungee.dnmc.main.DragoniteMC;
 import com.ericlam.mc.msgsystem.api.PMManager;
 import com.ericlam.mc.msgsystem.api.PlayerIgnoreManager;
 import com.ericlam.mc.msgsystem.config.MSGConfig;
@@ -38,7 +38,7 @@ public class PrivateMessageManager implements PMManager {
     public PrivateMessageManager() {
         YamlManager configManager = MSGSystem.getApi().getConfigManager();
         this.msg = configManager.getConfigAs(MSGConfig.class);
-        this.sqlDataSource = DragonNiteMC.getAPI().getSQLDataSource();
+        this.sqlDataSource = DragoniteMC.getAPI().getSQLDataSource();
         CompletableFuture.runAsync(() -> {
             try (Connection connection = sqlDataSource.getConnection();
                  PreparedStatement statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS `MSG_Toggle_data` (`uuid` VARCHAR(40) PRIMARY KEY NOT NULL, `toggle` BOOLEAN NOT NULL )")) {
@@ -64,7 +64,7 @@ public class PrivateMessageManager implements PMManager {
     public void sendPrivateMessage(ProxiedPlayer player, ProxiedPlayer target, String message) {
 
         if (target == null) {
-            MessageBuilder.sendMessage(player, DragonNiteMC.getAPI().getMainConfig().getNoThisPlayer());
+            MessageBuilder.sendMessage(player, DragoniteMC.getAPI().getMainConfig().getNoThisPlayer());
             return;
         } else if (player.equals(target)) {
             MessageBuilder.sendMessage(player, msg.get("msg.send-self"));

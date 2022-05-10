@@ -3,7 +3,7 @@ package com.ericlam.mc.msgsystem.commands;
 import com.ericlam.mc.bungee.dnmc.builders.MessageBuilder;
 import com.ericlam.mc.bungee.dnmc.commands.caxerx.CommandNode;
 import com.ericlam.mc.bungee.dnmc.config.YamlManager;
-import com.ericlam.mc.bungee.dnmc.main.DragonNiteMC;
+import com.ericlam.mc.bungee.dnmc.main.DragoniteMC;
 import com.ericlam.mc.msgsystem.api.AnnounceManager;
 import com.ericlam.mc.msgsystem.api.ChatSpyManager;
 import com.ericlam.mc.msgsystem.api.PMManager;
@@ -55,7 +55,7 @@ public abstract class MSGSystemCommandNode extends CommandNode {
     @Override
     public void executeCommand(CommandSender commandSender, List<String> list) {
         if (!(commandSender instanceof ProxiedPlayer)) {
-            MessageBuilder.sendMessage(commandSender, DragonNiteMC.getAPI().getMainConfig().getNotPlayer());
+            MessageBuilder.sendMessage(commandSender, DragoniteMC.getAPI().getMainConfig().getNotPlayer());
             return;
         }
         ProxiedPlayer player = (ProxiedPlayer) commandSender;
